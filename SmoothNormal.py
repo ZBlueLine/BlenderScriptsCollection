@@ -22,18 +22,6 @@ def dot_product(v1, v2):
 def included_angle(v1, v2):
     return np.arccos(dot_product(v1,v2)/(vector_length(v1)*vector_length(v2)))
 
-def GammaToLinearSpaceExact(value):
-    if value <= 0.04045:
-        return value / 12.92
-    elif value < 1.0:
-        return pow((value + 0.055)/1.055, 2.4)
-    else:
-        return pow(value, 2.2)
-
-def GammaToLinearSpace(color):
-    return [GammaToLinearSpaceExact(color[0]), GammaToLinearSpaceExact(color[1]), GammaToLinearSpaceExact(color[2]), color[3]]
-
-
 
 me = bpy.data.meshes['布洛妮娅']
 me.calc_tangents(uvmap = "UVMap")
@@ -108,5 +96,4 @@ for poly in me.polygons:
         
         normalTS = Vector((normalTSX, normalTSY, normalTSZ))
         color = [normalTS.x * 0.5 + 0.5, normalTS.y * 0.5 + 0.5 , normalTS.z * 0.5 + 0.5, alpha]
-        color = GammaToLinearSpace(color)
         me.color_attributes[0].data[loop_index].color = color
